@@ -44,7 +44,7 @@
         },
         "responses": {
           "201": {
-            "description": "User created.",
+            "description": "User created",
             "content": {
               "application/json": {
                 "schema": {
@@ -71,7 +71,7 @@
                   },
                   "example": {
                     "id": "43cf04a6-5287-478f-9d47-37180cb74cbb",
-                    "admin": "false",
+                    "admin": false,
                     "name": "User Name",
                     "email": "useremail@domain.com",
                     "created_at": "2022-06-09T04:38:08.864Z",
@@ -94,6 +94,102 @@
                   },
                   "example": {
                     "error": "User already exists!"
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "get": {
+        "tags": ["User"],
+        "summary": "List all users",
+        "description": "Only `admin` users have access",
+        "parameters": [
+          {
+            "in": "header",
+            "name": "user_id",
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            },
+            "required": true
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Users listed correctly",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "type": "object",
+                    "properties": {
+                      "id": {
+                        "type": "string"
+                      },
+                      "admin": {
+                        "type": "boolean"
+                      },                    
+                      "name": {
+                        "type": "string"
+                      },
+                      "email": {
+                        "type": "string"
+                      },
+                      "created_at": {
+                        "type": "date"
+                      },
+                      "updated_at": {
+                        "type": "date"
+                      }
+                    }
+                  },
+                  "example": [
+                    {
+                      "id": "cc6181f1-c065-4d2a-8ca3-7ee4a74ee5e4",
+                      "admin": false,
+                      "name": "Usuario de teste",
+                      "email": "emailteste@dominio.com",
+                      "created_at": "2022-06-09T04:40:02.022Z",
+                      "updated_at": "2022-06-09T04:40:02.022Z"
+                    },
+                    {
+                      "id": "a01cf546-1d19-4934-950e-3d1d3d53ed87",
+                      "admin": true,
+                      "name": "Usuario de teste Admin",
+                      "email": "emailtesteadmin@dominio.com",
+                      "created_at": "2022-06-09T05:13:22.931Z",
+                      "updated_at": "2022-06-09T05:13:22.931Z"
+                    }
+                  ]
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "User not found or without access",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "type": "string"
+                    }
+                  }
+                },
+                "examples": {
+                  "notfound": {
+                    "value": {
+                      "error": "User not found!"
+                    }
+                  },
+                  "noaccess": {
+                    "value": {
+                      "error": "User is not an admin!"
+                    }
                   }
                 }
               }
